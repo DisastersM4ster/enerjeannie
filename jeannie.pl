@@ -4,43 +4,73 @@ use strict;
 use LWP::UserAgent;
 use Getopt::Long;
 
+##############
+#
+# variables have to be set to your environment
+#
+##############
+
+my $password = 1;
+# with a working DNS hostnames are possible
+# if hostname does not resolv, insert an IP instead
+my $host = "energenie.home.lan";
+
+# here you can set aliases for your PMS
+# it is for a better human readable solution
+# you can set any word as device name
+# duplicated socket numbers are possible
+# even the key word have to be unique
+# socket with number 0 is special => all sockets will set to state you defined
+# syntax: 'keyword' => <socket_number>,
+my %socketMap = (
+	'socket_1' => 1,
+	'socket_2' => 2,
+	'socket_3' => 3,
+	'socket_4' => 4, 
+	'all' => 0, 
+);
+
+##############
+#
+# variables do not need to change
+#
+##############
+
 
 my $ua = LWP::UserAgent->new;
 my $req = "";
 my $res = "";
 my $postContentType = "application/x-www-form-urlencoded";
-my $password= 1;
 my $socketAlias = 'empty';
 my $reqTargetState = 'off'; 
 my $socketNumber = 1;
 my $doLoop =  0;
 
-# with a working DNS hostnames are possible
-# if hostname does not resolv, insert an IP instead
-my $host = "energenie.home.lan";
-
-my %socketMap = (
-	'socket_1' => 0,
-	'socket_2' => 1,
-	'socket_3' => 2,
-	'socket_4' => 3, 
-	'all' => 0, );
 
 my %targetState = ();
 my %socketState = ();
+
+
+##############
+#
+# END VARIABLES
+#
+##############
+
 
 # initialize %targetState hash with 0 (switch off) 
 for ($socketNumber = 1; $socketNumber < 4; $socketNumber++) {
 	$targetState{"$socketNumber"} = 0;
 	$socketState{"$socketNumber"} = 0;
 }
-
 $socketNumber = 0;
 
+# read options from command line
 GetOptions (
 	'number|nummer|socket|sockel=i' => \$socketNumber,
 	'device|geraet=s' => \$socketAlias,
-	'state|status=s' => \$reqTargetState, );
+	'state|status=s' => \$reqTargetState, 
+);
 
 $socketNumber = $socketMap{"$socketAlias"} if (defined($socketMap{"$socketAlias"}));
 
