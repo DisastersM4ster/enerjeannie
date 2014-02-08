@@ -13,7 +13,7 @@ use Getopt::Long;
 my $password = 1;
 # with a working DNS hostnames are possible
 # if hostname does not resolv, insert an IP instead
-my $host = "energenie.home.lan";
+my $host = "pms.example.com";
 
 # here you can set aliases for your PMS
 # it is for a better human readable solution
@@ -32,7 +32,7 @@ my %socketMap = (
 
 ##############
 #
-# variables do not need to change
+# variables do not need any change
 #
 ##############
 
@@ -91,7 +91,7 @@ if ($res->is_success) {
 }
 
 while ($socketNumber < 5) {
-	if ( "$reqTargetState" =~ /on/i ) {
+	if ( "$reqTargetState" =~ /on/i || "$reqTargetState" == 1 ) {
 		$targetState{"$socketNumber"} = 1;
 	} else {
 		$targetState{"$socketNumber"} = 0;
