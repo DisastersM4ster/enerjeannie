@@ -23,11 +23,11 @@ my $host = "pms.example.com";
 # socket with number 0 is special => all sockets will set to state you defined
 # syntax: 'keyword' => <socket_number>,
 my %socketMap = (
-	'socket_1' => 1,
-	'socket_2' => 2,
-	'socket_3' => 3,
-	'socket_4' => 4, 
-	'all' => 0, 
+	'socket_1' => '1',
+	'socket_2' => '2',
+	'socket_3' => '3',
+	'socket_4' => '4', 
+	'all' => '0', 
 );
 
 ##############
@@ -188,4 +188,60 @@ sub setSocketState {
 	$res->is_success or warn "Could not change socket state of socket ".$socket." on ".$host."\nError: ".$res->status_line."\n";
 
 }
+
+__END__
+
+=head1 NAME
+
+jeannie.pl -- switches sockets of an energenie PMS LAN
+
+=head1 SYNOPSIS
+
+B<jeannie.pl> --number|nummer|sockel=0|1|2|3|4 --state=0|1
+
+B<jeannie.pl> --device|geraet=<device_name> --state=0|1
+
+=head1 DESCRIPTION
+
+The script B<jeannie> switches the state of sockets of an B<energenie PMS LAN>.
+You can switch on or off each single socket or all sockets at once. 
+
+=over 4
+
+=item B<--number|nummer|sockel=<socket_number>>
+
+Valid values for a socket number is 1 to 4. You can choose 0, too. Number 0 is a special for all sockets.
+
+=back
+
+=over 4
+
+=item B<--state=0|1>
+
+You can switch on or off each socket by using --state. Value 0 switches off the socket. 
+With value 1 you can switch it on. The script scans current state of the socket and switches only if needed.
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item switch on socket number 1
+
+jeannie.pl --number=1 --state=1
+
+=item switch off socket number 3
+
+jeannie.pl --number 3 --state 0
+
+=item switch off all sockets
+
+jeannie.pl
+
+=item switch in on all sockets
+
+jeannie.pl --state=on
+
+=back
 
