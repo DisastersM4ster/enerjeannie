@@ -27,7 +27,10 @@ my %socketMap = (
 	'socket_2' => '2',
 	'socket_3' => '3',
 	'socket_4' => '4', 
-	'all' => '0', 
+	'all' => '0',
+	'group1' => '1,3',
+	'group2' => '2,4',
+	'group3' => '2,3,4'
 );
 
 ##############
@@ -45,10 +48,12 @@ my $socketAlias = 'empty';
 my $reqTargetState = 'off'; 
 my $socketNumber = 1;
 my $doLoop =  0;
+my $i = 0;
 
 
 my %targetState = ();
 my %socketState = ();
+my @sockets = ();
 
 
 ##############
@@ -74,9 +79,13 @@ GetOptions (
 
 $socketNumber = $socketMap{"$socketAlias"} if (defined($socketMap{"$socketAlias"}));
 
-if ( $socketNumber == 0 ) {
+if ( $socketNumber =~ /^0$/ ) {
 	$socketNumber = 1;
 	$doLoop = 1;
+} elsif ($socketNumber =~ /^[1-4],/) {
+	@sockets = split(/,/,$socketNumber);
+	$socketNumber = $sockets[0];
+	$doLoop = 2;
 }
 
 $ua->agent("Jeannie Switcher/0.1");
@@ -90,6 +99,7 @@ if ($res->is_success) {
 	die "Host $host cannot be reached. Error: $res->status_line \n";
 }
 
+$i = 0;
 while ($socketNumber < 5) {
 	if ( "$reqTargetState" =~ /on/i || "$reqTargetState" == 1 ) {
 		$targetState{"$socketNumber"} = 1;
@@ -105,6 +115,9 @@ while ($socketNumber < 5) {
 
 	if ($doLoop == 1) { 
 		$socketNumber++;
+	} elsif ($doLoop == 2 && $i < $#sockets) {
+		$i++;
+		$socketNumber = $sockets[$i];
 	} else {
 		$socketNumber = 5; 
 	}
