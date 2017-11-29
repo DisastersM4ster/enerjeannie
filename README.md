@@ -28,7 +28,7 @@ Usage
 
 You can use the command with numbers or with words.
 Options --socket and --state are required.
-/usr/bin/perl jeannie.pl --socket=0|1|2|3|4 --state=0|1
+Usage: <code>/usr/bin/perl jeannie.pl --socket=0|1|2|3|4 --state=0|1</code>
 
 Option "--socket" can be replaced by this alternatives:
 * --number
