@@ -16,11 +16,11 @@ To install this tool you only need to copy jeannie.pl into some bin directory, e
 variables to fix:
 
 * $host
-** should be set to the hostname/IP of your energenie PMS
+  * should be set to the hostname/IP of your energenie PMS
 * $password
-** should be set to the password set in your energenie PMS
+  * should be set to the password set in your energenie PMS
 * %socketMap
-** hash map of human readable socket or device names
+  * hash map of human readable socket or device names
 
 
 Usage
